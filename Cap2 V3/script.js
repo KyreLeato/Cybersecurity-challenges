@@ -265,7 +265,7 @@ quitButton.addEventListener('click', function() {
 
 async function fetchScenarios() {
     try {
-        const response = await fetch('/Cybersecurity-challenges-main/Cap2 V3/questions.json');
+        const response = await fetch('Cybersecurity-challenges/Cap2 V3/questions.json');
         if (!response.ok) {
             throw new Error('Failed to fetch questions.json');
         }
