@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Challenge</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" function preventBack() {
+            window.history.forward(); 
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null }; defer></script>
+</head>
+<body>
+    <a href="guidebook.html" id="guidebookBtn" class="guidebook-btn">Guidebook</a>
+
+    <div id="loadingContainer" class="loading-container">
+        <div class="loader"></div>
+        <div class="loading-text">Loading...</div>
+    </div>
+
+    <div id="disclaimerSection" class="disclaimer-section">
+        <div class="container">
+            <div class="game-header">
+                <span class="game-icon">🔒</span>
+                <div>
+                    <h1>Cybersecurity Challenge</h1>
+                    <p class="game-subtitle">Test your knowledge. Learn to stay safe online!</p>
+                </div>
+            </div>
+            <div class="disclaimer-content">
+                <div class="disclaimer-header">
+                    <span class="disclaimer-icon">ℹ️</span>
+                    <h2>Disclaimer</h2>
+                </div>
+                <p class="disclaimer-intro">Welcome to the Cybersecurity Challenge Game.</p>
+                <p>Before proceeding, please read and agree to the following:</p>
+                <ul class="disclaimer-list">
+                    <li><span class="disclaimer-bullet">✔️</span> This game is designed for educational purposes only.</li>
+                    <li><span class="disclaimer-bullet">✔️</span> Scenarios are simulations to raise awareness about cybersecurity threats.</li>
+                    <li><span class="disclaimer-bullet">✔️</span> No actual hacking techniques or malicious code are provided.</li>
+                    <li><span class="disclaimer-bullet">✔️</span> Use the knowledge gained ethically and responsibly.</li>
+                    <li><span class="disclaimer-bullet">✔️</span> Check the game guidance to learn more about cybersecurity.</li>
+                </ul>
+                <p class="disclaimer-agree">
+                    <span class="disclaimer-warning">⚠️</span> By checking the box below, you acknowledge that you understand and agree to these terms.
+                </p>
+                <div class="player-info">
+                    <div class="form-fields">
+                        <div class="form-group">
+                            <label for="playerName"><span class="form-icon">👤</span> Your Name:</label>
+                            <input type="text" id="playerName" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="playerAge"><span class="form-icon">🎂</span> Your Age:</label>
+                            <input type="number" id="playerAge" placeholder="Enter your age">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <p class="agreement">
+                            <input type="checkbox" id="agreeCheckbox">
+                            <span class="agree-icon">✔️</span> I agree to the terms and conditions
+                        </p>
+                        <button id="startButton" disabled>Start Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="difficultySection" style="display: none;">
+        <div class="container">
+            <div class="game-header">
+                <span class="game-icon">🎮</span>
+                <div>
+                    <h1>Select Difficulty</h1>
+                    <p class="game-subtitle">Choose your challenge level</p>
+                </div>
+            </div>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+                <button class="difficulty-btn" data-difficulty="normal">Medium</button>
+                <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameSection" class="game-section" style="display: none;">
+        <div class="container">
+            <div class="score-display">Score: <span id="scoreValue">0</span></div>
+            <div class="questions-counter">Question <span id="currentQuestionNum">1</span>/<span id="totalQuestions">13</span></div>
+            <div class="progress-bar"><div id="progressBar" class="progress"></div></div>
+            <div id="scenarioContainer" class="scenario"></div>
+            <div id="optionsContainer" class="options"></div>
+            <div id="feedback" class="feedback"></div>
+            <button id="nextButton" style="display: none;">Next Scenario</button>
+        </div>
+    </div>
+
+    <div id="gameCompleted" class="game-completed" style="display: none;">
+        <div class="container">
+            <h1>Congratulations!</h1>
+            <p>You've completed the Cybersecurity Challenge.</p>
+            <div id="finalScore"></div>
+            <div id="badgeContainer" class="badge"></div>
+            <button id="restartButton" class="restart-btn">Play Again</button>
+            <button id="quitButton" class="quit-btn">Quit</button>
+        </div>
+    </div>
+</body>
+</html>
