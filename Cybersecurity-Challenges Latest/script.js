@@ -13,6 +13,8 @@ let selectedDifficulty = null;
 
 // Objects Elements Connection
 const loadingContainer = document.getElementById('loadingContainer');
+const playerNameInput = document.getElementById('playerName');
+const playerAgeInput = document.getElementById('playerAge');
 const disclaimerSection = document.getElementById('disclaimerSection');
 const difficultySection = document.getElementById('difficultySection');
 const gameSection = document.getElementById('gameSection');
@@ -30,7 +32,7 @@ const badgeContainer = document.getElementById('badgeContainer');
 const restartButton = document.getElementById('restartButton');
 const quitButton = document.getElementById('quitButton');
 const difficultyButtons = document.querySelectorAll('.difficulty-btn');
-const POPUP_TRIGGER_QUESTION = Math.floor(Math.random() * (7 - 3 + 1)) + 3;
+
 
 // Hide the guidebook button initially
 const guidebookBtn = document.getElementById('guidebookBtn');
@@ -147,39 +149,132 @@ document.head.appendChild(style);
 
 // Fade out loading, show disclaimer
 setTimeout(() => {
-    if (!loadingContainer) {
-        console.error('Error: loadingContainer is null');
-        return;
-    }
+    if (!loadingContainer) return;
     loadingContainer.classList.add('fade-out');
     setTimeout(() => {
         loadingContainer.style.display = 'none';
         if (guidebookBtn) guidebookBtn.style.display = 'inline-block';
         if (disclaimerSection) disclaimerSection.style.display = 'block';
-        else console.error('Error: disclaimerSection is null');
     }, 500);
 }, 3000);
 
-// Checkbox enables start button
-agreeCheckbox.addEventListener('change', function() {
-    if (!startButton) {
-        console.error('Error: startButton is null');
-        return;
+// Helper to show/hide validation messages
+function showValidationMessage(input, message) {
+    let msgElem = input.parentElement.querySelector('.validation-msg');
+    if (!msgElem) {
+        msgElem = document.createElement('div');
+        msgElem.className = 'validation-msg';
+        msgElem.style.color = '#f00';
+        msgElem.style.fontSize = '0.95em';
+        msgElem.style.marginTop = '2px';
+        input.parentElement.appendChild(msgElem);
     }
-    startButton.disabled = !this.checked;
-    console.log('Checkbox state:', this.checked);
+    msgElem.textContent = message;
+    msgElem.style.display = message ? 'block' : 'none';
+}
+
+// Validate player name (letters and spaces only)
+function validateName() {
+    const value = playerNameInput.value.trim();
+    if (!value) {
+        showValidationMessage(playerNameInput, 'Name is required.');
+        return false;
+    }
+    if (!/^[A-Za-z\s]+$/.test(value)) {
+        showValidationMessage(playerNameInput, 'Name must only contain letters.');
+        return false;
+    }
+    showValidationMessage(playerNameInput, '');
+    return true;
+}
+
+// Validate player age (numbers only, 1-120)
+function validateAge() {
+    const value = playerAgeInput.value.trim();
+    if (!value) {
+        showValidationMessage(playerAgeInput, 'Age is required.');
+        return false;
+    }
+    if (!/^\d+$/.test(value)) {
+        showValidationMessage(playerAgeInput, 'Age must be a number.');
+        return false;
+    }
+    const age = parseInt(value, 10);
+    if (age < 1 || age > 120) {
+        showValidationMessage(playerAgeInput, 'Enter a valid age (1-120).');
+        return false;
+    }
+    showValidationMessage(playerAgeInput, '');
+    return true;
+}
+
+// Enable/disable disclaimer checkbox and start button
+function updateDisclaimerState() {
+    const nameValid = validateName();
+    const ageValid = validateAge();
+    agreeCheckbox.disabled = !(nameValid && ageValid);
+    if (!agreeCheckbox.disabled) {
+        agreeCheckbox.parentElement.style.opacity = 1;
+    } else {
+        agreeCheckbox.checked = false;
+        startButton.disabled = true;
+        agreeCheckbox.parentElement.style.opacity = 0.6;
+    }
+}
+
+// Generate two random popup triggers
+function getTwoPopupTriggers(totalQuestions) {
+    // First popup between 3 and 7
+    const first = Math.floor(Math.random() * (7 - 3 + 1)) + 3;
+    // Second popup between 8 and 12, and not the same as first
+    let second;
+    do {
+        second = Math.floor(Math.random() * (12 - 8 + 1)) + 8;
+    } while (second === first);
+    return [first, second];
+}
+let POPUP_TRIGGER_QUESTIONS = getTwoPopupTriggers(QUESTIONS_PER_GAME);
+let popupsShown = 0;
+
+// Prevent typing numbers in name field
+playerNameInput.addEventListener('input', function() {
+    this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    updateDisclaimerState();
 });
+
+// Prevent typing non-numbers in age field
+playerAgeInput.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    updateDisclaimerState();
+});
+
+// Validate on blur as well
+playerNameInput.addEventListener('blur', validateName);
+playerAgeInput.addEventListener('blur', validateAge);
+
+// Prevent checking disclaimer box if fields are invalid
+agreeCheckbox.addEventListener('click', function(e) {
+    if (agreeCheckbox.disabled) {
+        e.preventDefault();
+        validateName();
+        validateAge();
+        alert('Please enter a valid name (letters only) and age (numbers only) before agreeing to the terms.');
+    }
+});
+
+// When checkbox is checked, enable start button
+agreeCheckbox.addEventListener('change', function() {
+    startButton.disabled = !this.checked;
+});
+
+// Disable start button for checking inputs
+agreeCheckbox.disabled = true;
+agreeCheckbox.parentElement.style.opacity = 0.6;
+startButton.disabled = true;
 
 // Start button shows difficulty selection
 startButton.addEventListener('click', function() {
-    if (!disclaimerSection || !difficultySection) {
-        console.error('Error: disclaimerSection or difficultySection is null', {
-            disclaimerSection: disclaimerSection,
-            difficultySection: difficultySection
-        });
-        return;
-    }
-    console.log('Start button clicked, transitioning to difficulty section');
+    if (!disclaimerSection || !difficultySection) return;
     disclaimerSection.style.display = 'none';
     difficultySection.style.display = 'block';
     if (guidebookBtn) guidebookBtn.style.display = 'none';
@@ -188,19 +283,9 @@ startButton.addEventListener('click', function() {
 // Difficulty selection
 difficultyButtons.forEach(button => {
     button.addEventListener('click', async function() {
-        if (!this.dataset.difficulty) {
-            console.error('Error: Difficulty button missing data-difficulty attribute');
-            return;
-        }
+        if (!this.dataset.difficulty) return;
         selectedDifficulty = this.dataset.difficulty;
-        console.log('Difficulty selected:', selectedDifficulty);
-        if (!difficultySection || !gameSection) {
-            console.error('Error: difficultySection or gameSection is null', {
-                difficultySection: difficultySection,
-                gameSection: gameSection
-            });
-            return;
-        }
+        if (!difficultySection || !gameSection) return;
         difficultySection.style.display = 'none';
         gameSection.style.display = 'block';
         await initGame();
@@ -209,16 +294,15 @@ difficultyButtons.forEach(button => {
 
 // Next button
 nextButton.addEventListener('click', function() {
-    if (!feedbackContainer || !nextButton) {
-        console.error('Error: feedbackContainer or nextButton is null');
-        return;
-    }
+    if (!feedbackContainer || !nextButton) return;
     feedbackContainer.style.display = 'none';
     nextButton.style.display = 'none';
     currentScenarioIndex++;
-    console.log('Next button clicked, currentScenarioIndex:', currentScenarioIndex);
-
-    if (!popupTriggered && currentScenarioIndex === POPUP_TRIGGER_QUESTION) {
+    if (
+        popupsShown < 2 &&
+        POPUP_TRIGGER_QUESTIONS.includes(currentScenarioIndex)
+    ) {
+        popupsShown++;
         showPopup();
     } else if (currentScenarioIndex < selectedScenarios.length) {
         loadScenario();
@@ -229,50 +313,40 @@ nextButton.addEventListener('click', function() {
 
 // Restart button
 restartButton.addEventListener('click', async function() {
-    if (!gameCompleted || !difficultySection) {
-        console.error('Error: gameCompleted or difficultySection is null');
-        return;
-    }
-    console.log('Restart button clicked');
+    if (!gameCompleted || !difficultySection) return;
     gameCompleted.style.display = 'none';
     difficultySection.style.display = 'block';
     popupTriggered = false;
-    selectedDifficulty = null; // Explicitly reset to null to enforce new selection
-    selectedScenarios = []; // Clear selected scenarios
-    currentScenarioIndex = 0; // Reset index
-    score = 0; // Reset score
-    scoreValue.textContent = score; // Update UI
-    // Do not call initGame here; let difficulty selection trigger it
+    selectedDifficulty = null;
+    selectedScenarios = [];
+    currentScenarioIndex = 0;
+    score = 0;
+    scoreValue.textContent = score;
 });
 
 // Quit button
 quitButton.addEventListener('click', function() {
-    console.log('Quit button clicked');
     const playerName = document.getElementById('playerName') ? document.getElementById('playerName').value : 'Anonymous';
     const playerAge = document.getElementById('playerAge') ? document.getElementById('playerAge').value : '';
     const result = `${score}/${maxScore}`;
-
     const googleFormURL = `https://docs.google.com/forms/d/e/1FAIpQLSetaJQxQ_21zgpTOI-O1vFn6q2g3U5gQWlsNtDe19ypXz2Z2g/viewform?usp=pp_url`
         + `&entry.753452273=${encodeURIComponent(playerName)}`
         + `&entry.735828413=${encodeURIComponent(playerAge)}`
         + `&entry.1000316234=${encodeURIComponent(result)}`;
-
     window.open(googleFormURL, '_blank');
-    window.location.href = 'index.html';
+    window.location.href = 'startgame.html';
 });
 
 // Game Functions
 
 async function fetchScenarios() {
     try {
-        console.log('Using embedded scenarios data');
         scenariosData = scenariosDataEmbedded;
         if (!scenariosData || !scenariosData.scenarios || !scenariosData.popups) {
             throw new Error('Embedded scenarios data is invalid or missing scenarios/popups');
         }
         return scenariosData;
     } catch (error) {
-        console.error('Error loading scenarios:', error);
         alert('Failed to load questions. Please refresh the page or try again later.');
         if (gameSection && disclaimerSection) {
             gameSection.style.display = 'none';
@@ -283,87 +357,59 @@ async function fetchScenarios() {
 }
 
 function selectRandomScenarios() {
-    if (!scenariosData || !scenariosData.scenarios) {
-        console.error('Error: scenariosData is null or missing scenarios');
-        return [];
-    }
+    if (!scenariosData || !scenariosData.scenarios) return [];
     if (!['easy', 'normal', 'hard'].includes(selectedDifficulty)) {
-        console.error('Error: Invalid difficulty selected:', selectedDifficulty);
         alert('Invalid difficulty selected. Please choose a difficulty level.');
         return [];
     }
     const filteredScenarios = scenariosData.scenarios.filter(scenario => scenario.difficulty === selectedDifficulty);
     if (filteredScenarios.length < QUESTIONS_PER_GAME) {
-        console.error(`Error: Not enough scenarios for difficulty ${selectedDifficulty}. Found ${filteredScenarios.length}, need ${QUESTIONS_PER_GAME}`);
         alert(`Not enough questions available for ${selectedDifficulty} difficulty. Please try another difficulty.`);
         return [];
     }
     const allScenarioIds = [...Array(filteredScenarios.length).keys()];
     for (let i = allScenarioIds.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [allScenarioIds[i], allScenarioIds[j]] = [allScenarioIds[i], allScenarioIds[j]];
+        [allScenarioIds[i], allScenarioIds[j]] = [allScenarioIds[j], allScenarioIds[i]];
     }
     const selectedIds = allScenarioIds.slice(0, QUESTIONS_PER_GAME);
-    const selected = selectedIds.map(id => filteredScenarios[id]);
-    console.log('Selected scenarios:', selected);
-    return selected;
+    return selectedIds.map(id => filteredScenarios[id]);
 }
 
 function selectRandomPopup() {
-    if (!scenariosData || !scenariosData.popups) {
-        console.error('Error: scenariosData is null or missing popups');
-        return null;
-    }
+    if (!scenariosData || !scenariosData.popups) return null;
     const popupIds = [...Array(scenariosData.popups.length).keys()];
     const randomIndex = Math.floor(Math.random() * popupIds.length);
-    const selected = scenariosData.popups[popupIds[randomIndex]];
-    console.log('Selected popup:', selected);
-    return selected;
+    return scenariosData.popups[popupIds[randomIndex]];
 }
 
 async function initGame() {
     if (!scenariosData) {
         await fetchScenarios();
     }
-    if (!scenariosData) {
-        console.error('Error: Failed to load scenariosData');
-        return;
-    }
+    if (!scenariosData) return;
     currentScenarioIndex = 0;
     score = 0;
     scoreValue.textContent = score;
     selectedScenarios = selectRandomScenarios();
     if (selectedScenarios.length === 0) {
-        console.error('Error: No scenarios selected, reverting to difficulty section');
         gameSection.style.display = 'none';
         difficultySection.style.display = 'block';
         return;
     }
-    console.log('Game initialized, loading first scenario');
+    POPUP_TRIGGER_QUESTIONS = getTwoPopupTriggers(QUESTIONS_PER_GAME);
+    popupsShown = 0;
     loadScenario();
 }
 
 function loadScenario() {
-    if (!scenarioContainer || !optionsContainer || !scoreValue || !progressBar) {
-        console.error('Error: Essential game elements are null', {
-            scenarioContainer: scenarioContainer,
-            optionsContainer: optionsContainer,
-            scoreValue: scoreValue,
-            progressBar: progressBar
-        });
-        return;
-    }
+    if (!scenarioContainer || !optionsContainer || !scoreValue || !progressBar) return;
     if (currentScenarioIndex >= selectedScenarios.length) {
-        console.error('Error: currentScenarioIndex out of bounds', {
-            currentScenarioIndex: currentScenarioIndex,
-            selectedScenariosLength: selectedScenarios.length
-        });
         completeGame();
         return;
     }
     const scenario = selectedScenarios[currentScenarioIndex];
     if (!scenario) {
-        console.error('Error: Invalid scenario at index', currentScenarioIndex);
         completeGame();
         return;
     }
@@ -387,14 +433,10 @@ function loadScenario() {
         });
         optionsContainer.appendChild(button);
     });
-    console.log('Scenario loaded:', scenario);
 }
 
 function selectOption(index, isCorrect) {
-    if (!optionsContainer || !feedbackContainer || !nextButton || !scoreValue) {
-        console.error('Error: Essential game elements are null in selectOption');
-        return;
-    }
+    if (!optionsContainer || !feedbackContainer || !nextButton || !scoreValue) return;
     const optionButtons = optionsContainer.querySelectorAll('button');
     optionButtons.forEach(button => {
         button.disabled = true;
@@ -409,14 +451,12 @@ function selectOption(index, isCorrect) {
         scoreValue.textContent = score;
     }
     nextButton.style.display = 'block';
-    console.log('Option selected, score:', score, 'isCorrect:', isCorrect);
 }
 
 function showPopup() {
     popupTriggered = true;
     selectedPopup = selectRandomPopup();
     if (!selectedPopup) {
-        console.error('Error: No popup selected, continuing to next scenario');
         if (currentScenarioIndex < selectedScenarios.length) {
             loadScenario();
         } else {
@@ -425,9 +465,9 @@ function showPopup() {
         return;
     }
     popupContainer.innerHTML = `
-        <div class="popup">
-            <h3>Urgent Alert!</h3>
-            <p>${selectedPopup.question}</p>
+        <div class="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc" tabindex="-1">
+            <h3 id="popupTitle">Urgent Alert!</h3>
+            <p id="popupDesc">${selectedPopup.question}</p>
             <button class="option-btn" onclick="handlePopupResponse(true)">Yes</button>
             <button class="option-btn" onclick="handlePopupResponse(false)">No</button>
             <div id="popupFeedback" class="feedback" style="display: none;"></div>
@@ -435,20 +475,17 @@ function showPopup() {
         </div>
     `;
     popupContainer.style.display = 'flex';
-    console.log('Popup shown:', selectedPopup);
+
+    const popupDiv = popupContainer.querySelector('.popup');
+    if (popupDiv) popupDiv.focus();
+
 }
 
 function handlePopupResponse(isYes) {
-    if (!popupContainer) {
-        console.error('Error: popupContainer is null');
-        return;
-    }
+    if (!popupContainer) return;
     const popupFeedback = document.getElementById('popupFeedback');
     const closeButton = document.getElementById('closePopup');
-    if (!popupFeedback || !closeButton) {
-        console.error('Error: popupFeedback or closeButton is null');
-        return;
-    }
+    if (!popupFeedback || !closeButton) return;
     const isCorrect = (isYes && selectedPopup.options[0].correct) || (!isYes && selectedPopup.options[1].correct);
     popupFeedback.innerHTML = isCorrect ? selectedPopup.feedback.correct : selectedPopup.feedback.incorrect;
     popupFeedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
@@ -465,14 +502,10 @@ function handlePopupResponse(isYes) {
             completeGame();
         }
     }, { once: true });
-    console.log('Popup response handled, isCorrect:', isCorrect);
 }
 
 function completeGame() {
-    if (!gameSection || !gameCompleted || !finalScore || !badgeContainer) {
-        console.error('Error: Essential completion elements are null');
-        return;
-    }
+    if (!gameSection || !gameCompleted || !finalScore || !badgeContainer) return;
     gameSection.style.display = 'none';
     gameCompleted.style.display = 'block';
     const percentage = (score / maxScore) * 100;
@@ -499,10 +532,9 @@ function completeGame() {
         ${badgeImage}
         <h4 class="glow-effect">${badgeTitle}</h4>
     `;
-    console.log('Game completed, score:', score, 'percentage:', percentage);
 }
 
-// Embedded scenarios data
+// Scenarios data embedded directly in the script as separate object will violate the CORS policy.
 const scenariosDataEmbedded = {
     "scenarios": [
          {
@@ -641,7 +673,7 @@ const scenariosDataEmbedded = {
             "question": "What does a padlock icon in the browser address bar mean?",
             "options": [
                 { "text": "The website is completely safe", "correct": false },
-                { "text": "The connection is encrypted", "correct": true },
+                { "text": "The browser connection is encrypted, resulting in a secure connection", "correct": true },
                 { "text": "The website is free to use", "correct": false },
                 { "text": "The website is ad-free", "correct": false }
             ],
@@ -707,10 +739,10 @@ const scenariosDataEmbedded = {
                 { "text": "Yes, if it’s a well-known brand", "correct": false },
                 { "text": "No, check the site’s legitimacy first", "correct": true },
                 { "text": "Yes, if it’s free", "correct": false },
-                { "text": "Yes, if friends recommended it", "correct": false }
+                { "text": "No, but if friends recommended it, then yes", "correct": false }
             ],
             "feedback": {
-                "correct": "Correct! Unsolicited free offers may be scams. Verify the site.",
+                "correct": "Correct! Unsolicited free offers may be scams. It is adviced to verify the legitimacy of the site.",
                 "incorrect": "That's risky. Always verify before sharing personal info."
             },
             "category": "privacy",
