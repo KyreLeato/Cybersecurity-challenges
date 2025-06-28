@@ -7,7 +7,7 @@ Game Title: Cybersecurity-challenges
 
 Steps below:
 
-1: Visit this github link: https://github.com/KyreLeato/Cybersecurity-challenges.git
+1: Visit the Github link: https://github.com/KyreLeato/Cybersecurity-challenges.git
 2: Click the left-side green icon indicates <code> button, drop down the menu and select:"Download ZIP".
 3: Prepare the extraction tools to extract the ZIP file. Official link provided: WINRAR (https://www.rarlab.com/download.htm) or 7ZIP (https://www.7-zip.org/).
 4: Right-click the downloaded ZIP folder and select "Extract to </your file>".
