@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="welcome.css">
+</head>
+
+<body class="loading-active">
+    <div class="loading-container">
+        <div class="loader"></div>
+        <div class="loading-text">Loading...</div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-header">
+            <span class="welcome-icon">🌌</span>
+            <div>
+                <h1>Welcome to the Adventure</h1>
+                <p class="welcome-subtitle">Choose your path to begin</p>
+            </div>
+        </div>
+
+        <div class="options">
+            <div class="option-card">
+                <span class="option-icon">📖</span>
+                <div class="option-title">Guidebook</div>
+                <p class="option-description">Explore the Guidebook to learn the rules, strategies, and tips to master the adventure.</p>
+                <p class="option-tip"><strong>Tip:</strong> Perfect for understanding the game mechanics.</p>
+                <a href="guidebook.html" class="option-btn">Open Guidebook</a>
+            </div>
+            <div class="option-card quiz">
+                <span class="option-icon">❓</span>
+                <div class="option-title">Quiz</div>
+                <p class="option-description">Test your knowledge and skills in the Quiz to earn points and badges.</p>
+                <p class="option-tip"><strong>Tip:</strong> Great for challenging yourself.</p>
+                <a href="gamequiz.html" class="option-btn">Start Quiz</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loadingContainer = document.querySelector('.loading-container');
+            setTimeout(() => {
+                loadingContainer.classList.add('fade-out');
+                document.body.classList.remove('loading-active');
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
