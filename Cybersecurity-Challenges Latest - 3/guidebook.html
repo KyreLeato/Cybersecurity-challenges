@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Guidebook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0&" />
+    <link rel="stylesheet" href="chatbot.css" />
+    <link rel="stylesheet" href="guidebook.css">
+</head>
+
+<body>
+    <!--Guidebook Content-->
+<div class="container">
+    <div class="guidebook-header">
+        <span class="material-symbols-outlined guidebook-icon">menu_book</span>
+        <div>
+            <h1>Cybersecurity Guidebook</h1>
+            <p class="guidebook-subtitle">Your quick reference for safe digital habits</p>
+        </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Phishing Awareness</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">What is Phishing?</h3>
+            <p class="banner-description">
+                Phishing involves fraudulent emails, texts, or websites that trick users into sharing sensitive information. Always verify the sender's identity and avoid clicking suspicious links. Look for signs like spelling errors or urgent requests.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: Phishing Explained, credited to K- Animation (@K-Animation852)</h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/sS3mZVCARZg?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+                <li>Loss of sensitive data (passwords, financial info)</li>
+                <li>Identity theft</li>
+                <li>Financial loss</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Do not click suspicious links or attachments</li>
+                <li>Verify sender identity before responding</li>
+                <li>Report phishing attempts to your IT/security team</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Password Security</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">Password Security</h3>
+            <p class="banner-description">
+                Use strong, unique passwords for each account. A good password is a long passphrase, like "blue-sky-rainbow-2023". Never reuse passwords or share them with anyone, even trusted individuals.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: Password Security Tips, credited to Kaduu - Dark Web Monitoring (@kaduudarkwebmonitoring) </h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/BoyeFozmAXk?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+                <li>Accounts can be easily hacked if passwords are weak or reused</li>
+                <li>Personal and financial data theft</li>
+                <li>Loss of access to important services</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Use a password manager to generate and store strong passwords</li>
+                <li>Change passwords regularly</li>
+                <li>Never share your passwords with anyone</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Safe Browsing & Download</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">Safe Browsing & Download</h3>
+            <p class="banner-description">
+                Ensure websites use "HTTPS" connection and display a padlock icon for secure connections. Be cautious of sites requesting unnecessary permissions, executes unknown .exe files that are downloaded from untrusted sources.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: Safe Browsing & Download Explained, credited to AMAZE Org (@amazeorg)</h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/HxySrSbSY7o?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+                <li>Exposure to malware and viruses, resulting in privacy leaking.</li>
+                <li>Running unknown .exe files results of creating backdoor for hacking.</li>
+                <li>Common approaches for phishing attacks and data theft to trigger this issue.</li>
+                <li>Compromised personal and financial information</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Always check for "HTTPS" connections is being used and the padlock icon</li>
+                <li>Do not allow or give any permission to download files from untrusted sources</li>
+                <li>Keep your browser adblock features turn on and antivirus software up-to-date</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Two-Factor Authentication (2FA) or Multi-Authentication</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">Two-Factor Authentication (2FA) or Multi-authentication</h3>
+            <p class="banner-description">
+                It adds an extra layer of security by requiring a second form of verification, like a one-time code that sends onto your phone, email or any other device to verify your identity. Enable it on all accounts that offer it to protect against unauthorized access.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: What is 2FA/Multi-auth?, credited to HID (@hidglobal) </h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/tFv101qURKE?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+                <li>Accounts are more vulnerable to hacking without 2FA</li>
+                <li>Unauthorized access to sensitive data</li>
+                <li>Potential identity theft</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Enable 2FA on all accounts that support it</li>
+                <li>Use authentication apps or SMS codes for verification</li>
+                <li>Strictly prohibit to share your 2FA codes with anyone, including friends, family and someone who tends to ask you for the codes.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Social Engineering</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">What is Social Engineering?</h3>
+            <p class="banner-description">
+                Social engineering is a form of cybercrime that uses social engineering tactics to trick users into sharing sensitive information, like passwords, financial info or personal data. Often happens through normal conversations, fraudulent human relationships, or impersonation of trusted individuals.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: Social Engineering Explained, credited to Kaspersky (@Kaspersky)</h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/uvKTMgWRPw4?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+                <li>Loss of sensitive data (passwords, financial info)</li>
+                <li>Identity theft, fraudulent human relationships</li>
+                <li>Financial loss, loss of access to important services</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Do not get psychologically manipulated by the email or SMS that requires your imediate actions</li>
+                <li>Verify sender identity before responding or clicking any form of links that you don't recognize</li>
+                <li>Beware of suspicious conversations that asks for your personal informations, including your email address, passwords, or financial status</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Network Security</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">What is Network Security?</h3>
+            <p class="banner-description">
+                Network security protects your devices and data as they travel across networks. It includes using firewalls, secure Wi-Fi, VPNs, and safe network practices to prevent unauthorized access, data theft, and cyberattacks.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: Network Security Explained, credited to Simplilearn (@SimplilearnOfficial) </h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/9GZlVOafYTg?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+             <li>Unauthorized access to your devices or data</li>
+                <li>Data interception on public Wi-Fi</li>
+                <li>Malware spreading across your network</li>
+                <li>Loss of privacy and sensitive information</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Always use strong, unique Wi-Fi passwords</li>
+                <li>Make sure you enable firewalls on your devices</li>
+                <li>Do not connect any untrusted free network, or use a VPN on public Wi-Fi to encrypt your traffic</li>
+                <li>Enable Guest WiFI for guest user to connect to prevent any unauthorized access to your router</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Software Updates</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">Why do you need to keep your system up-to-date?</h3>
+            <p class="banner-description">
+                Software updates are crucial for security. They fix vulnerabilities, improve performance, and add new features. Regularly updating your operating system, applications, and antivirus software helps protect against cyber threats.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: The benefits of Software Updates, credited to MediaPRO (@MediaProAdaptiveAwareness) </h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/xc20JvvTLO4?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+                <li>Vulnerable to cyberattacks</li>
+                <li>Malware infections to PC and the whole network</li>
+                <li>Performance degradation or slow down the devices overtime</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Constantly checking on patch-note for the changes and acknowledge the problem exists in current patch</li>
+                <li>Update your operating system and applications to the latest version, or reschedule your update time that is not during working hours</li>
+                <li>Regular update like security updates is highly-adviced to be up-to-date</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="banner" onclick="toggleBanner(this)">
+    <h2>Malware Threats</h2>
+    <div class="banner-content">
+        <div class="banner-section">
+            <h3 class="banner-title">What is Malware?</h3>
+            <p class="banner-description">
+                Malware is malicious software designed to harm or exploit devices and networks. It includes viruses, worms, ransomware, and spyware. Always use reputable antivirus software and avoid downloading files from untrusted sources.
+            </p>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Watch: What is Malware Threat?, credited to Kaspersky (@Kaspersky) </h4>
+            <div class="video-container">
+                <iframe 
+                    class="banner-video"
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/NMYbkzjI5EY?controls=1&rel=0&autoplay=0&mute=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    title="YouTube video">
+                </iframe>
+            </div>
+        </div>
+        <div class="banner-section">
+            <h4 class="banner-subtitle">Consequences</h4>
+            <ul class="banner-list">
+                <li>Constantly slowdown your devices</li>
+                <li>Compromised devices and network for hacking attacks like DDoS attack</li>
+                <li>Devices performance degradation and may poses harm to devices hardware components due to overstressing the components, Blue-Screen of Dead (BSOD), or Dataloss due to malware encryption</li>
+            </ul>
+            <h4 class="banner-subtitle">Remediation</h4>
+            <ul class="banner-list">
+                <li>Keep your Operating System and applications up-to-date</li>
+                <li>Antivirus software to enhance your devices security</li>
+                <li>Weekly PC security check-up is adviced</li>
+                <li>Do not download or give any permissions to any form of file format that requires to install or run on your devices, it is adviced to seek for IT professional help to resolve the issue</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <!--Chatbot Functions-->
+        <button id="chatbot-toggler">
+            <span class="material-symbols-rounded">mode_comment</span>
+            <span class="material-symbols-rounded">close</span>
+        </button>
+
+        <div class="chatbot_popup">
+            
+            <!-- Chatbot Header-->
+            <div class="chat-header">
+                <div class="head-info">
+                    <svg class="chat-logo" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+                        <path 
+                            d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 
+                            106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 
+                            0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 
+                            23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 
+                            267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 
+                            0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 
+                            644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 
+                            609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 
+                            149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 
+                            51.9-51.9s51.9 23.3 51.9 51.9z"></path>
+                    </svg>
+                    <h2 class="logo-text">AI CHATBOT</h2>
+                </div>
+                <button id = "chatbot-close" class="material-symbols-rounded">keyboard_arrow_down</button>
+            </div>
+
+            <!--Chatbot Content-->
+            <div class="chat-body">
+                <div class="message bot-message">
+                    <svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+                        <path 
+                            d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 
+                            106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 
+                            0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 
+                            23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 
+                            267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 
+                            0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 
+                            644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 
+                            609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 
+                            149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 
+                            51.9-51.9s51.9 23.3 51.9 51.9z">
+                        </path>
+                    </svg>
+                        <div class="message-text"> Hey There! <br /> How can I help you today? </div>
+                </div>
+            </div>
+
+            <!--Chatbot Footer-->
+            <div class="chat-footer">
+                <form action="#" class="chat-form">
+                    <textarea placeholder="message..." class="message-input" required></textarea>
+                        <div class= "chat-controls">
+                            <button type="button" id= "emoji-picker" class= "material-symbols-outlined">sentiment_satisfied</button>
+                            <div class="file-upload-wrapper">
+                                <input type = "file" accept = "image/*" id="file-input" hidden>
+                                <img src="#" >
+                                <button type="button" id= "file-upload" class= "material-symbols-rounded">attach_file</button>
+                                <button type="button" id= "file-cancel" class= "material-symbols-rounded">close</button>
+                            </div>
+                            <button type="submit" id= "send-message" class= "material-symbols-rounded">arrow_upward</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+
+        <a href="welcome.html" class="challenge-btn glow-effect">Back to Home Page</a>
+    </div>
+
+    <!-- JavaScript loader -->
+    <script> function toggleBanner(banner) { banner.classList.toggle('expanded');}</script>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js" defer></script>
+    <script src="chatbot.js" defer></script>
+    
+</body>
+</html>
