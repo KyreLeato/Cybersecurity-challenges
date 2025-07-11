@@ -1,5 +1,5 @@
 // Number of questions per game
-const QUESTIONS_PER_GAME = 13;
+const QUESTIONS_PER_GAME = 15;
 
 // Variables declaration
 let currentScenarioIndex = 0;
