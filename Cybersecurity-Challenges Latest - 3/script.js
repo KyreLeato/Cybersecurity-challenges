@@ -6,17 +6,17 @@ let currentScenarioIndex = 0;
 let score = 0;
 let selectedScenarios = [];
 let selectedPopup = null;
-let maxScore = QUESTIONS_PER_GAME + 2; // 13 questions + 2 popups
+let maxScore = QUESTIONS_PER_GAME + 2;
 let scenariosData = null;
 let popupTriggered = false;
 let selectedDifficulty = null;
-let questionHistory = []; // Store all attempts' question history
-let attemptNumber = 0; // Track attempt number
-let currentAttemptHistory = []; // Store current attempt's questions
-let currentAttemptView = 0; // Track the current attempt being viewed
-let popupTimer = null; // Timer for popup countdown
-let popupTimeLeft = 20; // Reduced to 20 seconds for urgency
-let tickSound = null; // For ticking sound effect
+let questionHistory = [];
+let attemptNumber = 0; 
+let currentAttemptHistory = [];
+let currentAttemptView = 0;
+let popupTimer = null;
+let popupTimeLeft = 20;
+let tickSound = null;
 
 // Objects Elements Connection
 const loadingContainer = document.getElementById('loadingContainer');
@@ -454,6 +454,50 @@ function updateDisclaimerState() {
     }
 }
 
+// Prevent back navigation during game
+function preventBackNavigation() {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function(event) {
+        window.history.pushState(null, null, window.location.href);
+        showBackNavigationWarning();
+    };
+}
+
+// Show warning modal when back button is pressed
+function showBackNavigationWarning() {
+    const warningModal = document.createElement('div');
+    warningModal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #18182a;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #0f0;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        z-index: 1000;
+        text-align: center;
+        color: #e0e0e0;
+    `;
+    
+    warningModal.innerHTML = `
+        <h3 style="color: #0f0; margin-bottom: 15px;">Warning!</h3>
+        <p style="margin-bottom: 20px;">You cannot go back during the game.</p>
+        <button onclick="this.parentElement.remove()" style="
+            background: #0f0;
+            color: #18182a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        ">Continue Game</button>
+    `;
+    
+    document.body.appendChild(warningModal);
+}
+
 // Generate two random popup triggers
 function getTwoPopupTriggers(totalQuestions) {
     const first = Math.floor(Math.random() * (7 - 3 + 1)) + 3;
@@ -492,7 +536,7 @@ agreeCheckbox.addEventListener('click', function(e) {
     }
 });
 
-// When checkbox is checked, enable start button
+// Enable start button when checkbox is checked
 agreeCheckbox.addEventListener('change', function() {
     startButton.disabled = !this.checked;
 });
@@ -509,6 +553,7 @@ startButton.addEventListener('click', function() {
     difficultySection.style.display = 'block';
     if (guidebookBtn) guidebookBtn.style.display = 'none';
     hideLeaderboard(); // Hide leaderboard when starting game
+    preventBackNavigation(); // Prevent back navigation
 });
 
 // Difficulty selection
@@ -519,6 +564,7 @@ difficultyButtons.forEach(button => {
         if (!difficultySection || !gameSection) return;
         difficultySection.style.display = 'none';
         gameSection.style.display = 'block';
+        preventBackNavigation(); // Prevent back navigation
         await initGame();
     });
 });
@@ -570,7 +616,6 @@ quitButton.addEventListener('click', function() {
 });
 
 // Game Functions
-
 async function fetchScenarios() {
     try {
         scenariosData = scenariosDataEmbedded;
@@ -588,6 +633,7 @@ async function fetchScenarios() {
     }
 }
 
+// Select random scenarios based on difficulty
 function selectRandomScenarios() {
     if (!scenariosData || !scenariosData.scenarios) return [];
     if (!['easy', 'normal', 'hard'].includes(selectedDifficulty)) {
@@ -617,9 +663,9 @@ function selectRandomPopup() {
 }
 
 async function initGame() {
-    attemptNumber++; // Increment for the new attempt
-    currentAttemptView = attemptNumber; // Show the latest attempt by default
-    selectedDifficulty = selectedDifficulty || 'easy'; // Fallback to 'easy'
+    attemptNumber++;
+    currentAttemptView = attemptNumber;
+    selectedDifficulty = selectedDifficulty || 'easy';
     playerName = document.getElementById('playerName')?.value || 'Anonymous';
 
     // Reset game state
@@ -644,7 +690,7 @@ async function initGame() {
     // Hide game section and show scenario container
     POPUP_TRIGGER_QUESTIONS = getTwoPopupTriggers(QUESTIONS_PER_GAME);
     popupsShown = 0;
-    currentAttemptHistory = []; // Start new attempt history
+    currentAttemptHistory = []; //Clear previous attempts history and start new attempt history
     loadScenario();
 }
 
@@ -731,7 +777,7 @@ function startTickSound() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     tickSound = ctx.createOscillator();
     tickSound.type = 'sine';
-    tickSound.frequency.setValueAtTime(800, ctx.currentTime); // High-pitched tick
+    tickSound.frequency.setValueAtTime(800, ctx.currentTime); // Time tick frequency
     const gainNode = ctx.createGain();
     gainNode.gain.setValueAtTime(0.1, ctx.currentTime); // Low volume
     tickSound.connect(gainNode);
@@ -746,6 +792,7 @@ function stopTickSound() {
     }
 }
 
+// Popup trigger function
 function showPopup() {
     popupTriggered = true;
     selectedPopup = selectRandomPopup();
@@ -757,7 +804,7 @@ function showPopup() {
         }
         return;
     }
-    popupTimeLeft = 20; // Reduced for urgency
+    popupTimeLeft = 20;
     const shuffledOptions = shuffleArray(selectedPopup.options);
     popupContainer.innerHTML = `
         <div class="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc" tabindex="-1">
@@ -776,7 +823,6 @@ function showPopup() {
     const timerDisplay = document.getElementById('popupTimer');
     if (popupDiv) popupDiv.focus();
 
-    // Add event listeners to option buttons
     const optionButtons = popupContainer.querySelectorAll('.option-btn');
     optionButtons.forEach((button, index) => {
         button.addEventListener('click', () => {
@@ -803,11 +849,12 @@ function showPopup() {
         if (popupTimeLeft <= 0) {
             clearInterval(popupTimer);
             stopTickSound();
-            handlePopupResponse(-1, true, shuffledOptions); // Pass -1 for timeout
+            handlePopupResponse(-1, true, shuffledOptions);
         }
     }, 1000);
 }
 
+// Handle popup response
 function handlePopupResponse(optionIndex, isTimeout = false, shuffledOptions) {
     if (!popupContainer) return;
     const popupFeedback = document.getElementById('popupFeedback');
@@ -855,7 +902,7 @@ function handlePopupResponse(optionIndex, isTimeout = false, shuffledOptions) {
         button.disabled = true; // Disable buttons after selection
     });
 
-    // Remove shake animation
+    // Remove shake animation if got input
     popupDiv.classList.remove('shake');
     currentAttemptHistory.push({
         attempt: attemptNumber,
@@ -884,7 +931,7 @@ function renderLearningCurve() {
     container.id = 'learningCurveContainer';
     container.appendChild(canvas);
 
-    // Add inline styles here
+    // Graph inline styles here
     container.style.margin = '30px auto';
     container.style.width = '100%';
     container.style.maxWidth = '800px';
@@ -901,12 +948,13 @@ function renderLearningCurve() {
     container.style.position = 'relative';
     container.style.overflow = 'hidden';
 
+    // Create the graph and attempt with colors
     const baseColors = [
-        'rgba(0,255,0,0.2)',   // Attempt 1
-        'rgba(0,255,0,0.3)',   // Attempt 2
-        'rgba(0,255,0,0.4)',   // Attempt 3
-        'rgba(0,255,0,0.5)',   // Attempt 4
-        'rgba(0,255,0,0.6)',   // Attempt 5
+        'rgba(0,255,0,0.2)',
+        'rgba(0,255,0,0.3)',
+        'rgba(0,255,0,0.4)',
+        'rgba(0,255,0,0.5)',
+        'rgba(0,255,0,0.6)',
     ];
     const highlightColor = 'rgba(0,255,0,1)';
 
@@ -917,11 +965,11 @@ function renderLearningCurve() {
         let currentScore = 0;
         attemptHistory.forEach((item, index) => {
             if (item.scoreChange !== undefined) {
-                currentScore += item.scoreChange; // Use scoreChange for questions and popups
+                currentScore += item.scoreChange; 
             } else {
-                currentScore += item.correct ? 1 : 0; // Fallback for regular questions
+                currentScore += item.correct ? 1 : 0;
             }
-            scores.push(Math.max(0, currentScore)); // Ensure non-negative score
+            scores.push(Math.max(0, currentScore));
         });
 
         datasets.push({
@@ -941,7 +989,7 @@ function renderLearningCurve() {
     new Chart(canvas, {
         type: 'line',
         data: {
-            labels: Array.from({ length: QUESTIONS_PER_GAME + 2 }, (_, i) => `Q${i + 1}`), // +2 for popups
+            labels: Array.from({ length: QUESTIONS_PER_GAME + 2 }, (_, i) => `Q${i + 1}`),
             datasets: datasets
         },
         options: {
@@ -1120,7 +1168,7 @@ function hideLeaderboard() {
     if (sidebar) sidebar.style.display = 'none';
 }
 
-// Add tab event listeners for leaderboard difficulty switching
+// Add tab event listeners
 document.addEventListener('DOMContentLoaded', function() {
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {
@@ -1176,7 +1224,7 @@ function completeGame() {
     // Submit score to leaderboard
     const playerName = playerNameInput.value || "Anonymous";
     submitScoreToLeaderboard(playerName, score, selectedDifficulty);
-    showLeaderboard(); // Show leaderboard after game completion
+    showLeaderboard();
 
     // Remove old graph/history if present
     const oldCurve = container.querySelector('#learningCurveContainer');
@@ -1184,7 +1232,7 @@ function completeGame() {
     const oldHistory = container.querySelector('#questionHistoryContainer');
     if (oldHistory) oldHistory.remove();
 
-    // Show the latest attempt by default
+    // Update current attempt view
     currentAttemptView = attemptNumber;
 
     // Insert the graph first, then the question history
@@ -1213,7 +1261,7 @@ function completeGame() {
     renderQuestionHistory(questionHistoryContainer);
 }
 
-// Scenarios data embedded directly in the script as separate object will violate the CORS policy.
+// Scenarios data embedded directly in the script for simplicity
 const scenariosDataEmbedded = {
     "scenarios": [
         {
